@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"%s>
+<title>Library overview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<style>
+ 
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+    min-height: 100vh;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    text-decoration:none;
+}
+
+ 
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+ 
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+ 
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+ 
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-wrap: break-word;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    color: #0074D9;
+    line-height: inherit;
+}
+
+*, p, li, ul, ol {
+    line-height: 1.33em;
+}
+
+small {
+    font-size: 0.875rem;
+    line-height: 1.33em;
+}
+
+h1.title {
+    color: #000000;
+    border: none;
+    margin-bottom: 3rem;
+    font-size: 2.15rem;
+    line-height: 1em;
+    font-weight: 300;
+    letter-spacing: 0.04rem;
+}
+
+h1 {
+    font-size: 1.3rem;
+    line-height: 1em;
+    font-weight: 900;
+    color: #909090;
+    letter-spacing: 0.04rem;
+    border-bottom: 2px solid #DDDDDD;
+}
+
+h2 {
+    font-size: 1.1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #606060;
+    letter-spacing: 0.03rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h3 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.02rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h4 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.015rem;
+}
+
+h5 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.01rem;
+}
+
+h6 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0;
+}
+
+ul {
+    list-style-type: square;
+}
+
+ul, ol, li {
+    margin-left: 0.75rem;
+}
+
+* + p, * + ul, * + ol {
+    margin-top: 0.8rem;
+}
+
+* + h1, * + h2, * + h3, * + h4, * + h5, * + h6 {
+    margin-top: 2.5rem;
+}
+
+h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + * {
+    margin-top: 1rem;
+}
+
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
+    margin-top: 1.25rem;
+}
+
+code {
+    background-color: #F0F0F0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+pre > code {
+    display: block;
+    padding: 10px 6px;
+    margin: 0.8rem 0;
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+}
+
+div.pair {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+div.pairgrow {
+    flex-grow: 1;
+}
+
+.toplink {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 500;
+    letter-spacing: 0.015rem;
+    color: #404040;
+}
+
+.toplink + .toplink {
+    margin-left: 1rem;
+}
+
+a.toplink:hover {
+    color: #0074D9;
+    border: none;
+}
+
+a:hover {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.header {
+    border-top: 5px solid #424242;
+    border-bottom: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.footer {
+    border-bottom: 3px solid #424242;
+    border-top: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.column, .pair {
+    max-width: 784px; 
+    margin: auto;
+}
+
+.column {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    min-height: calc(100vh - 7.8rem - 10px);
+}
+
+</style>
+</head><body><div>
+
+<div class="header">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://codeation.github.io">codeation.github.io</a>
+
+</div><div>
+
+<a class="toplink" href="https://codeation.github.io">about</a>
+<a class="toplink" href="https://codeation.github.io/impress/index.html"><b>impress</b></a>
+<a class="toplink" href="https://codeation.github.io/lineation/index.html">lineation</a>
+
+</div></div>
+</div>
+
+<div class="column">
+<h1 class="title">Library overview</h1>
+    
+<h1>Application</h1>
+<p><code>impress.Application</code> is the basic struct of GUI application. It's an edges of the main rectangle, a source of events from a user, and something under the hood.</p>
+<p>To create application <code>impress.Application</code> and close it:</p>
+<pre><code>app := impress.NewApplication(image.Rect(0, 0, 640, 480), &quot;Main&quot;)
+defer app.Close()
+</code></pre>
+<p><code>image.Rect()</code> is a coordinates of the main window. A rectangle contains the upper left corner (x = 0, y = 0) and the bottom right corner (x = 640, y = 480) coordinates. <code>x</code> points to a column in pixels (from left to right), and <code>y</code> points to a row (from top to bottom). The &quot;Main&quot; string is a window title.</p>
+<p><code>app.Close()</code> at the end will hide the application window and do something else.</p>
+<p>The <code>app.Sync()</code> should finalize draw calls.</p>
+<pre><code>app.Sync()
+</code></pre>
+<p>One more thing. We plan to wait until the user destroy something in an application:</p>
+<pre><code>for {
+	e := &lt;-app.Chan()
+	if e == event.DestroyEvent || e == event.KeyExit {
+		break
+	}
+}
+</code></pre>
+<p>Where <code>e := &lt;-app.Chan()</code> is an event like a mouse event, keyboard event, etc. <code>app.Chan()</code> func returns an event channel, by the way.</p>
+<h1>Window</h1>
+<p>Even if you don't like windows, you usually need a white place for drawing. The <code>app.NewWindow()</code> parameters are the size and background color, for example:</p>
+<pre><code>w := app.NewWindow(image.Rect(0, 0, 320, 480), color.RGBA{255, 255, 255, 255})
+defer w.Drop()
+</code></pre>
+<p>First <code>image.Rect</code> is a place within an application bounds. Values of <code>color.RGBA</code> are RGBA, as always 0..255 each.</p>
+<p>Typically, an application opens and closes many windows in a lifetime. <code>w.Drop()</code> is necessary to hide the window and release its resources.</p>
+<p>In a real application, sizes and colors already exist inside the styles and palettes config. But in this example, they are created as new.</p>
+<p>See <a href="https://github.com/codeation/impress/blob/master/examples/simple/simple.go">example</a>.</p>
+<h1>Event loop</h1>
+<p>GUI application receives events. An event can change the state of an application. The application redraws its state to keep user in touch. And again, and again.</p>
+<p>In general, the event loop looks like this:</p>
+<pre><code>for {
+	e := &lt;- app.Chan()
+	if isExitAppAction(e) {
+		return
+	}
+
+	changeAppState(e)
+
+	if len(app.Chan()) == 0 {
+		redrawAppState()
+		app.Sync()
+	}
+}
+</code></pre>
+<p>The event loop continues forever until the user closes the application. <code>isExitAppAction(e)</code> is place to check if the event caused the application to quit immediately.</p>
+<p>If the application continues to run, then it's time to change the application's state in <code>changeAppState(e)</code>. The state of the application may remain the same if it is a useless event.</p>
+<p><code>len(app.Chan()) == 0</code> checks if a new event has arrived. There is no need to draw every intermediate state of the application if there is a new event. It is ok to draw the last state in the case when the user quickly types a lot of characters.</p>
+<p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same.</p>
+<p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
+<h1>Drawing</h1>
+<p>A window is created to draw something to inform the user. The contents of the window may change from time to time.</p>
+<p>To clear the previous contents of a window, call the <code>Clear()</code> method.</p>
+<p>You can draw lines, solid rectangles, text strings or images. The element is drawn on top of the previous ones, keep the correct drawing order.</p>
+<p>The font for drawing a text string must be opened before and destroyed after everything. Font attributes such as font family, height can be specified on opening. JSON with font parameters depends on the platform. The config file is a perfect place for font options like <code>{&quot;family&quot;: &quot;Sans&quot;, &quot;style&quot;: &quot;italic&quot;, &quot;variant&quot;: &quot;normal&quot;, &quot;weight&quot;: &quot;bold&quot;, &quot;stretch&quot;: &quot;condensed&quot;}</code>.</p>
+<p>The image to draw image must be opened before and destroyed after. Since an image takes up a lot of memory, destroy unused images as soon as possible.</p>
+<p>To make the content visible, call the <code>Show()</code> method after the window's content is ready.</p>
+<p>There is no need to touch the contents of the window if the drawing should be the same.</p>
+<p>To change window position, call <code>Size()</code> method. This call does not change the contents of the window.</p>
+<p>The created window is drawn on top of previous windows. To move any window on top, call the <code>Raise()</code> method. This call does not change the contents of the window.</p>
+<p>See <a href="https://github.com/codeation/impress/blob/master/examples/">examples folders</a> and <a href="https://pkg.go.dev/github.com/codeation/impress">documentation</a>.</p>
+
+
+</div>
+<div class="footer">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://github.com/codeation">github.com/codeation</a>
+
+</div></div>
+</div>
+
+</div></body></html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"%s>
+<title>canvas terminal. WebAssembly driver</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<style>
+ 
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+    min-height: 100vh;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    text-decoration:none;
+}
+
+ 
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+ 
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+ 
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+ 
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-wrap: break-word;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    color: #0074D9;
+    line-height: inherit;
+}
+
+*, p, li, ul, ol {
+    line-height: 1.33em;
+}
+
+small {
+    font-size: 0.875rem;
+    line-height: 1.33em;
+}
+
+h1.title {
+    color: #000000;
+    border: none;
+    margin-bottom: 3rem;
+    font-size: 2.15rem;
+    line-height: 1em;
+    font-weight: 300;
+    letter-spacing: 0.04rem;
+}
+
+h1 {
+    font-size: 1.3rem;
+    line-height: 1em;
+    font-weight: 900;
+    color: #909090;
+    letter-spacing: 0.04rem;
+    border-bottom: 2px solid #DDDDDD;
+}
+
+h2 {
+    font-size: 1.1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #606060;
+    letter-spacing: 0.03rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h3 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.02rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h4 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.015rem;
+}
+
+h5 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.01rem;
+}
+
+h6 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0;
+}
+
+ul {
+    list-style-type: square;
+}
+
+ul, ol, li {
+    margin-left: 0.75rem;
+}
+
+* + p, * + ul, * + ol {
+    margin-top: 0.8rem;
+}
+
+* + h1, * + h2, * + h3, * + h4, * + h5, * + h6 {
+    margin-top: 2.5rem;
+}
+
+h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + * {
+    margin-top: 1rem;
+}
+
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
+    margin-top: 1.25rem;
+}
+
+code {
+    background-color: #F0F0F0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+pre > code {
+    display: block;
+    padding: 10px 6px;
+    margin: 0.8rem 0;
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+}
+
+div.pair {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+div.pairgrow {
+    flex-grow: 1;
+}
+
+.toplink {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 500;
+    letter-spacing: 0.015rem;
+    color: #404040;
+}
+
+.toplink + .toplink {
+    margin-left: 1rem;
+}
+
+a.toplink:hover {
+    color: #0074D9;
+    border: none;
+}
+
+a:hover {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.header {
+    border-top: 5px solid #424242;
+    border-bottom: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.footer {
+    border-bottom: 3px solid #424242;
+    border-top: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.column, .pair {
+    max-width: 784px; 
+    margin: auto;
+}
+
+.column {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    min-height: calc(100vh - 7.8rem - 10px);
+}
+
+</style>
+</head><body><div>
+
+<div class="header">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://codeation.github.io">codeation.github.io</a>
+
+</div><div>
+
+<a class="toplink" href="https://codeation.github.io">about</a>
+<a class="toplink" href="https://codeation.github.io/impress/index.html"><b>impress</b></a>
+<a class="toplink" href="https://codeation.github.io/lineation/index.html">lineation</a>
+
+</div></div>
+</div>
+
+<div class="column">
+<h1 class="title">canvas terminal. WebAssembly driver</h1>
+    
+<h1>Overview</h1>
+<p>This is a part of cross-platform GUI Library for Go. See https://github.com/codeation/impress</p>
+<p>The WebAssembly terminal is a tool for using the browser as a GUI canvas.</p>
+<p>Reasons to have a browser version for a GUI app:</p>
+<ul>
+<li>Access from anywhere to view some of the data created on the desktop.</li>
+<li>Demonstration of desktop GUI application.</li>
+<li>Periodically launched application with a graphical interface without installation on computer.</li>
+</ul>
+<h1>Hello world</h1>
+<img src="https://codeation.github.io/images/canvas_small.png" width="675" height="445" />
+<p>Source:</p>
+<pre><code>package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+
+    &quot;github.com/codeation/impress&quot;
+    &quot;github.com/codeation/impress/event&quot;
+
+    _ &quot;github.com/codeation/impress/canvas&quot;
+)
+
+func main() {
+    app := impress.NewApplication(image.Rect(0, 0, 480, 240), &quot;Hello World Application&quot;)
+    defer app.Close()
+
+    font := impress.NewFont(15, map[string]string{&quot;family&quot;: &quot;Verdana&quot;})
+    defer font.Close()
+
+    w := app.NewWindow(image.Rect(0, 0, 480, 240), color.RGBA{240, 240, 240, 255})
+    defer w.Drop()
+
+    w.Text(&quot;Hello, world!&quot;, font, image.Pt(200, 100), color.RGBA{0, 0, 0, 255})
+    w.Line(image.Pt(200, 120), image.Pt(300, 120), color.RGBA{255, 0, 0, 255})
+    w.Show()
+    app.Sync()
+
+    for {
+        e := &lt;-app.Chan()
+        if e == event.DestroyEvent || e == event.KeyExit {
+            break
+        }
+    }
+}
+</code></pre>
+<p>To run :</p>
+<pre><code>git clone https://github.com/codeation/canvas.git
+cd canvas
+cp &quot;$(go env GOROOT)/misc/wasm/wasm_exec.js&quot; .
+GOOS=js GOARCH=wasm go build -o main.wasm ./cmd/
+go run ./examples/wasm
+</code></pre>
+<p>To see results, open <code>http://localhost:8080/</code> in you browser. Please, try with Brave or Chrome browser.</p>
+<h1>Project State</h1>
+<h2>Notes</h2>
+<ul>
+<li>The performance of the browser will not be enough for the regular use.</li>
+<li>This project is still in the early stages of development and is not yet in a usable state.</li>
+<li>The project tested on Debian 12.0 with Brave browser (Version 1.52.126 Chromium: 114.0.5735.133).</li>
+</ul>
+
+
+</div>
+<div class="footer">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://github.com/codeation">github.com/codeation</a>
+
+</div></div>
+</div>
+
+</div></body></html>

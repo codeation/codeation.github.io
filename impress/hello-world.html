@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"%s>
+<title>Hello World Example</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<style>
+ 
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+    min-height: 100vh;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    text-decoration:none;
+}
+
+ 
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+ 
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+ 
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+ 
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-wrap: break-word;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    color: #0074D9;
+    line-height: inherit;
+}
+
+*, p, li, ul, ol {
+    line-height: 1.33em;
+}
+
+small {
+    font-size: 0.875rem;
+    line-height: 1.33em;
+}
+
+h1.title {
+    color: #000000;
+    border: none;
+    margin-bottom: 3rem;
+    font-size: 2.15rem;
+    line-height: 1em;
+    font-weight: 300;
+    letter-spacing: 0.04rem;
+}
+
+h1 {
+    font-size: 1.3rem;
+    line-height: 1em;
+    font-weight: 900;
+    color: #909090;
+    letter-spacing: 0.04rem;
+    border-bottom: 2px solid #DDDDDD;
+}
+
+h2 {
+    font-size: 1.1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #606060;
+    letter-spacing: 0.03rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h3 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.02rem;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+h4 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.015rem;
+}
+
+h5 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0.01rem;
+}
+
+h6 {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 700;
+    color: #404040;
+    letter-spacing: 0;
+}
+
+ul {
+    list-style-type: square;
+}
+
+ul, ol, li {
+    margin-left: 0.75rem;
+}
+
+* + p, * + ul, * + ol {
+    margin-top: 0.8rem;
+}
+
+* + h1, * + h2, * + h3, * + h4, * + h5, * + h6 {
+    margin-top: 2.5rem;
+}
+
+h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + * {
+    margin-top: 1rem;
+}
+
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
+    margin-top: 1.25rem;
+}
+
+code {
+    background-color: #F0F0F0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+pre > code {
+    display: block;
+    padding: 10px 6px;
+    margin: 0.8rem 0;
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+}
+
+div.pair {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+div.pairgrow {
+    flex-grow: 1;
+}
+
+.toplink {
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 500;
+    letter-spacing: 0.015rem;
+    color: #404040;
+}
+
+.toplink + .toplink {
+    margin-left: 1rem;
+}
+
+a.toplink:hover {
+    color: #0074D9;
+    border: none;
+}
+
+a:hover {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.header {
+    border-top: 5px solid #424242;
+    border-bottom: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.footer {
+    border-bottom: 3px solid #424242;
+    border-top: 1px solid #D8D8D8;
+    background-color: #F0F0F0;
+    padding: 0.2rem 0;
+}
+
+.column, .pair {
+    max-width: 784px; 
+    margin: auto;
+}
+
+.column {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    min-height: calc(100vh - 7.8rem - 10px);
+}
+
+</style>
+</head><body><div>
+
+<div class="header">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://codeation.github.io">codeation.github.io</a>
+
+</div><div>
+
+<a class="toplink" href="https://codeation.github.io">about</a>
+<a class="toplink" href="https://codeation.github.io/impress/index.html"><b>impress</b></a>
+<a class="toplink" href="https://codeation.github.io/lineation/index.html">lineation</a>
+
+</div></div>
+</div>
+
+<div class="column">
+<h1 class="title">Hello World Example</h1>
+    
+<h1>Let's say hello</h1>
+<img src="https://codeation.github.io/images/hello_small.png" width="545" height="350" />
+<pre><code>package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+
+    &quot;github.com/codeation/impress&quot;
+    &quot;github.com/codeation/impress/event&quot;
+
+    _ &quot;github.com/codeation/impress/duo&quot;
+)
+
+func main() {
+    app := impress.NewApplication(image.Rect(0, 0, 480, 240), &quot;Hello World Application&quot;)
+    defer app.Close()
+
+    font := impress.NewFont(15, map[string]string{&quot;family&quot;: &quot;Verdana&quot;})
+    defer font.Close()
+
+    w := app.NewWindow(image.Rect(0, 0, 480, 240), color.RGBA{255, 255, 255, 255})
+    defer w.Drop()
+
+    w.Text(&quot;Hello, world!&quot;, font, image.Pt(200, 100), color.RGBA{0, 0, 0, 255})
+    w.Line(image.Pt(200, 120), image.Pt(300, 120), color.RGBA{255, 0, 0, 255})
+    w.Show()
+    app.Sync()
+
+    for {
+        e := &lt;-app.Chan()
+        if e == event.DestroyEvent || e == event.KeyExit {
+            break
+        }
+    }
+}
+</code></pre>
+<p>See an explanation of the source code in <a href="https://github.com/codeation/impress/wiki/Library-overview">a library overview</a>.</p>
+<h1>To run this example on Debian/ Ubuntu:</h1>
+<ol>
+<li>Install GTK+ 3 libraries, <code>pkg-config</code> and some libraries if you don't have them installed:</li>
+</ol>
+<pre><code>sudo apt-get install libgtk-3-dev
+sudo apt-get install pkg-config libsystemd-dev libwebp-dev
+</code></pre>
+<ol start="2">
+<li>Build impress terminal from source (see <a href="https://github.com/codeation/it">impress terminal page</a>):</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/it.git
+cd it
+make
+cd ..
+</code></pre>
+<ol start="3">
+<li>Then run example:</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/impress.git
+cd impress
+IMPRESS_TERMINAL_PATH=../it/it go run ./examples/simple/
+</code></pre>
+<h1>To run this example on macOS:</h1>
+<ol start="0">
+<li>Install <a href="https://brew.sh/">Homebrew</a> if you don't have it installed.</li>
+<li>Install GTK+ 3 (<code>brew install gtk+3</code>) and pkg-config (<code>brew install pkg-config</code>) if you don't have them installed.</li>
+<li>Build impress terminal from source (see <a href="https://github.com/codeation/it">impress terminal page</a>):</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/it.git
+cd it
+make
+cd ..
+</code></pre>
+<ol start="3">
+<li>Then run example:</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/impress.git
+cd impress
+IMPRESS_TERMINAL_PATH=../it/it go run ./examples/simple/
+</code></pre>
+<p><em>The latest releases aren't tested on Apple machines. The earlier version tested on both Intel and Silicon platform and worked well. Please, use earlier release or open <a href="https://github.com/codeation/impress/issues">issue</a> if some bugs have raised. PRs and MRs are welcome too.</em></p>
+
+
+</div>
+<div class="footer">
+<div class="pair"><div class="pairgrow">
+
+<a class="toplink" href="https://github.com/codeation">github.com/codeation</a>
+
+</div></div>
+</div>
+
+</div></body></html>
