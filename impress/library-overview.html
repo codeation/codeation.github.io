@@ -298,8 +298,8 @@ a:hover {
 </div><div>
 
 <a class="toplink" href="https://codeation.github.io">about</a>
-<a class="toplink" href="https://codeation.github.io/impress/index.html"><b>impress</b></a>
-<a class="toplink" href="https://codeation.github.io/lineation/index.html">lineation</a>
+<a class="toplink" href="https://codeation.github.io/impress/"><b>impress</b></a>
+<a class="toplink" href="https://codeation.github.io/lineation/">lineation</a>
 
 </div></div>
 </div>
@@ -337,27 +337,28 @@ defer w.Drop()
 <p>In a real application, sizes and colors already exist inside the styles and palettes config. But in this example, they are created as new.</p>
 <p>See <a href="https://github.com/codeation/impress/blob/master/examples/simple/simple.go">example</a>.</p>
 <h1>Event loop</h1>
-<p>GUI application receives events. An event can change the state of an application. The application redraws its state to keep user in touch. And again, and again.</p>
+<p>The GUI application redraws its state to keep user in touch. The application receives events. An event can change the state of an application.
+And again, and again.</p>
 <p>In general, the event loop looks like this:</p>
 <pre><code>for {
+	if len(app.Chan()) == 0 {
+		redrawAppState()
+		app.Sync()
+	}
+
 	e := &lt;- app.Chan()
 	if isExitAppAction(e) {
 		return
 	}
 
 	changeAppState(e)
-
-	if len(app.Chan()) == 0 {
-		redrawAppState()
-		app.Sync()
-	}
 }
 </code></pre>
+<p><code>len(app.Chan()) == 0</code> checks if a new event has arrived. There is no need to draw every intermediate state of the application if there is a new event. It is ok to draw the last state in the case when the user quickly types a lot of characters.</p>
+<p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same. The library implements <a href="https://codeation.github.io/impress/lazy-mode.html"><code>lazy mode</code></a> drawing.</p>
+<p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
 <p>The event loop continues forever until the user closes the application. <code>isExitAppAction(e)</code> is place to check if the event caused the application to quit immediately.</p>
 <p>If the application continues to run, then it's time to change the application's state in <code>changeAppState(e)</code>. The state of the application may remain the same if it is a useless event.</p>
-<p><code>len(app.Chan()) == 0</code> checks if a new event has arrived. There is no need to draw every intermediate state of the application if there is a new event. It is ok to draw the last state in the case when the user quickly types a lot of characters.</p>
-<p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same.</p>
-<p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
 <h1>Drawing</h1>
 <p>A window is created to draw something to inform the user. The contents of the window may change from time to time.</p>
 <p>To clear the previous contents of a window, call the <code>Clear()</code> method.</p>
