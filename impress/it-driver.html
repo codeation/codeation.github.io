@@ -308,15 +308,10 @@ a:hover {
 <h1 class="title">impress terminal. GTK+ 3 driver</h1>
     
 <h1>Overview</h1>
-<p><img src="https://github.com/codeation/it/actions/workflows/it-build-release-actions.yml/badge.svg" alt="build release"></p>
-<p>This is a part of cross-platform GUI Library for Go. See https://github.com/codeation/impress</p>
 <p>The impress library uses a separate application to low-level drawing.</p>
 <img src="https://codeation.github.io/images/it_scheme.png" width="580" height="274" />
 <p>The main GUI application contains pure Go code. There is not any low-level library required to build the main application. The impress terminal is running in parallel. Impress terminal was written in C and used the GTK-3 library. Named pipes are used to communicate between the main application and impress terminal.</p>
 <p>Impress terminal started and stopped by main application. By default, executable impress terminal binary launched from current directory. The environment variable <code>IMPRESS_TERMINAL_PATH</code> may be used to specify full pathname to impress terminal binary.</p>
-<h1>GTK-3 driver</h1>
-<p>The library uses <a href="https://github.com/codeation/it">a separate application</a> for drawing
-instead of binding low-level library to a Golang.</p>
 <p>Pros:</p>
 <ul>
 <li>To compile the application, it is not necessary to install low-level libraries.</li>
@@ -331,33 +326,31 @@ instead of binding low-level library to a Golang.</p>
 </ul>
 <p>You can <a href="https://github.com/codeation/it/releases">download</a>
 the compiled binary <code>it</code> file or make it again from <a href="https://github.com/codeation/it">the source</a>.</p>
-<p>You can specify the full path and name for the GUI driver via the environment variable, for example:</p>
-<pre><code>IMPRESS_TERMINAL_PATH=/path/it go run ./examples/simple/
-</code></pre>
-<p>or just copy the downloaded GUI driver to the working directory and run example:</p>
-<pre><code>go run ./examples/simple/
-</code></pre>
-<p><em>On Debian 12, <code>libharfbuzz-gobject</code> should be installed. If you are getting <code>error while loading shared libraries: libharfbuzz-gobject.so.0: cannot open shared object file: No such file or directory</code>, run <code>sudo apt-get install libharfbuzz-gobject0</code>.</em></p>
 <h1>Building (Linux)</h1>
-<p>Currently, the application uses <a href="https://www.gtk.org">GTK+ 3</a> for rendering, event collecting, etc. You should install <code>libgtk+-3.0</code> and packages that depend on GTK.</p>
-<p>On Debian/ Ubuntu you can run:</p>
+<ol start="0">
+<li>
+<p>Install <code>gcc</code>, <code>make</code>, <a href="https://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> if you don't have them installed.</p>
+</li>
+<li>
+<p>Currently, the application uses <a href="https://www.gtk.org">GTK+ 3</a> for rendering, event collecting, etc. You should install <code>libgtk+-3.0</code> and packages that depend on GTK. On Debian/ Ubuntu you can run:</p>
+</li>
+</ol>
 <pre><code>sudo apt-get install libgtk-3-dev
 </code></pre>
-<p>Also <a href="https://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> must be installed.</p>
-<p>To build binary, download the sources:</p>
+<ol start="2">
+<li>Build impress terminal from source:</li>
+</ol>
 <pre><code>git clone https://github.com/codeation/it.git
 cd it
-</code></pre>
-<p>and use the following command in project directory:</p>
-<pre><code>make
+make
+cd ..
 </code></pre>
 <h1>Building (Debian 12 + docker)</h1>
-<p>To build binary, download the sources:</p>
+<p>To build binary without installing additional packages:</p>
 <pre><code>git clone https://github.com/codeation/it.git
 cd it
-</code></pre>
-<p>and use the following command in project directory:</p>
-<pre><code>./build.sh
+./build.sh
+cd ..
 </code></pre>
 <p>This command creates a container with libgtk-3-dev packages from the gcc compiler container. The build is done inside the docker container without installing additional packages on the host.</p>
 <p>Once the build is complete, the docker images can be removed using the <code>docker image rm</code> command. You can remove containers named:</p>
@@ -366,26 +359,37 @@ it-build/gcc
 </code></pre>
 <p><em>On Debian 12, <code>libharfbuzz-gobject</code> should be installed. If you are getting <code>error while loading shared libraries: libharfbuzz-gobject.so.0: cannot open shared object file: No such file or directory</code>, run <code>sudo apt-get install libharfbuzz-gobject0</code>.</em></p>
 <h1>Building (macOS)</h1>
-<p><em>The latest releases aren't tested on Apple machines. The earlier version tested on both Intel and Silicon platform and worked well. Please, open <a href="https://github.com/codeation/impress/issues">issue</a>, if some bugs have raised. MRs are welcome too.</em></p>
-<p>First install <a href="https://brew.sh/">Homebrew</a> if you don't have installed.</p>
+<ol start="0">
+<li>
+<p>Install <a href="https://brew.sh/">Homebrew</a> if you don't have installed.</p>
+</li>
+<li>
 <p>To install <a href="https://www.gtk.org">GTK+ 3</a> run:</p>
+</li>
+</ol>
 <pre><code>brew install gtk+3
 </code></pre>
-<p>To install <code>pkg-config</code> run:</p>
+<ol start="2">
+<li>To install <code>pkg-config</code> run:</li>
+</ol>
 <pre><code>brew install pkg-config
 </code></pre>
-<p>To build binary, download the sources:</p>
+<ol start="3">
+<li>Build impress terminal from source:</li>
+</ol>
 <pre><code>git clone https://github.com/codeation/it.git
 cd it
+make
+cd ..
 </code></pre>
-<p>and use the following command in project directory:</p>
-<pre><code>make
-</code></pre>
+<p><em>The latest releases aren't tested on Apple Silicon machines. The earlier version tested on both Intel and Silicon platform and worked well. Please, open <a href="https://github.com/codeation/impress/issues">issue</a>, if some bugs have raised. MRs are welcome too.</em></p>
 <h1>Download</h1>
 <p>You can download the compiled binary <code>it</code> file on the <a href="https://github.com/codeation/it/releases">&quot;releases&quot;</a> page.</p>
 <p>Github Actions builds binaries since v0.2.4 to prevent any corruption. Make sure the release is built from a signed commit.</p>
 <p>Please, check and verify the sha256 sum for downloaded files from previous releases.</p>
 <p>The <code>codeation</code> GPG key (Id <code>A8109B6877BC845E</code>) is used to sign commits in the main branch.</p>
+<h1>Source code</h1>
+<p><a href="https://github.com/codeation/it">github.com/codeation/it</a></p>
 <h1>Issues</h1>
 <p>Feel free to open <a href="https://github.com/codeation/impress/issues">issue</a></p>
 

@@ -346,14 +346,18 @@ func main() {
 </code></pre>
 <p>See an explanation of the source code in <a href="https://codeation.github.io/impress/library-overview.html">a library overview</a>.</p>
 <h1>To run this example on Debian/ Ubuntu:</h1>
-<ol>
-<li>Install GTK+ 3 libraries, <code>pkg-config</code> and some libraries if you don't have them installed:</li>
+<ol start="0">
+<li>
+<p>Install <code>gcc</code>, <code>make</code>, <code>pkg-config</code> if you don't have them installed.</p>
+</li>
+<li>
+<p>Install GTK+ 3 libraries if you don't have them installed:</p>
+</li>
 </ol>
 <pre><code>sudo apt-get install libgtk-3-dev
-sudo apt-get install pkg-config libsystemd-dev libwebp-dev
 </code></pre>
 <ol start="2">
-<li>Build impress terminal from source (see <a href="https://github.com/codeation/it">impress terminal page</a>):</li>
+<li>Build impress terminal from source:</li>
 </ol>
 <pre><code>git clone https://github.com/codeation/it.git
 cd it
@@ -367,25 +371,7 @@ cd ..
 cd impress
 IMPRESS_TERMINAL_PATH=../it/it go run ./examples/simple/
 </code></pre>
-<h1>To run this example on macOS:</h1>
-<ol start="0">
-<li>Install <a href="https://brew.sh/">Homebrew</a> if you don't have it installed.</li>
-<li>Install GTK+ 3 (<code>brew install gtk+3</code>) and pkg-config (<code>brew install pkg-config</code>) if you don't have them installed.</li>
-<li>Build impress terminal from source (see <a href="https://github.com/codeation/it">impress terminal page</a>):</li>
-</ol>
-<pre><code>git clone https://github.com/codeation/it.git
-cd it
-make
-cd ..
-</code></pre>
-<ol start="3">
-<li>Then run example:</li>
-</ol>
-<pre><code>git clone https://github.com/codeation/impress.git
-cd impress
-IMPRESS_TERMINAL_PATH=../it/it go run ./examples/simple/
-</code></pre>
-<p><em>The latest releases aren't tested on Apple machines. The earlier version tested on both Intel and Silicon platform and worked well. Please, use earlier release or open <a href="https://github.com/codeation/impress/issues">issue</a> if some bugs have raised. PRs and MRs are welcome too.</em></p>
+<p>Steps 0-2 are needed to build a impress terminal binary. See <a href="https://codeation.github.io/impress/it-driver.html">impress terminal page</a> for other options for downloading or building impress terminal app.</p>
 
 
 </div>
