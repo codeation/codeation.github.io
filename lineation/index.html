@@ -313,10 +313,10 @@ a:hover {
 <p>Notes:</p>
 <ul>
 <li>This project implements basic functions for working with Mind Map.</li>
-<li>The project tested on Debian 11.6 and macOS Big Sur</li>
+<li>The project tested on Debian 12.5 and macOS 14.5</li>
 </ul>
-<h1>Driver installation</h1>
-<p>The application uses <a href="https://github.com/codeation/it">a separate GUI driver</a> for drawing
+<h1>Terminal installation</h1>
+<p>The application uses <a href="https://github.com/codeation/it">a separate impress terminal</a> for drawing
 instead of binding low-level library to a Golang.</p>
 <p>You can <a href="https://github.com/codeation/it/releases">download</a>
 the compiled binary <code>it</code> file or make it again from <a href="https://github.com/codeation/it">the source</a>.</p>
@@ -325,10 +325,10 @@ the compiled binary <code>it</code> file or make it again from <a href="https://
 <pre><code>git clone https://github.com/codeation/lineation.git
 cd lineation
 </code></pre>
-<p>You can specify the full path and name for the GUI driver via the environment variable, for example:</p>
+<p>You can specify the full path and name for the impress terminal via the environment variable, for example:</p>
 <pre><code>IMPRESS_TERMINAL_PATH=/path/it go run ./cmd demo/demo.xml
 </code></pre>
-<p>or just copy the downloaded GUI driver (file with name <code>it</code>) to the working directory and run:</p>
+<p>or just copy the downloaded impress terminal (file with name <code>it</code>) to the working directory and run:</p>
 <pre><code>go run ./cmd demo/demo.xml
 </code></pre>
 <h1>Mind-map format</h1>
