@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"%s>
-<title>What is wrong with Event-Oriented Programming?</title>
+<title>Recommended Event Propagation module</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <style>
@@ -319,22 +319,65 @@ a:hover {
 </div>
 
 <div class="column">
-<h1 class="title">What is wrong with Event-Oriented Programming?</h1>
+<h1 class="title">Recommended Event Propagation module</h1>
     
-<p>From <a href="https://en.wikipedia.org/wiki/Event-driven_programming">Wikipedia</a>:</p>
+<h1>Overview</h1>
+<p>The GUI application consumes all OS events such as keyboard, mouse, system, etc. In general, the application code tends to grow. Typically, the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC (Model-View-Controller)</a> pattern or its variants are useful for splitting the logic of a GUI application into modules.</p>
+<p>Model modules (letter M in the pattern name) must handle application data. Typically, the model code is the simplest part of the GUI application. For example, in a mind map editor, this code keeps the current contents of the mind map (nodes of tree, a selected node, etc.) and implements methods to change the content (insert a new node, add a new letter to node, etc).</p>
+<p>View modules (V letter) should display the current state of the model to the user. For example, the View module in the mind map editor draws node text, borders, lines between nodes, cursor, etc. View modules can be complex because the graphic design style is a valuable part of a GUI application. But the core logic of View modules is simple - to display the current state of the model to the user.</p>
+<p>Controller modules (C letter) must receive user events, call Model to change its state, and call View to display the model's new state to the user. For example, the control module in the mind map editor draws a mind map, waits for a new event, and in a switch statement for each possible type of event changes the contents of the mind map. And again.</p>
+<p>If your application contains two or more controller modules, you must use additional rules to separate events between different application windows.</p>
+<p>Some of the options:</p>
 <ul>
-<li>Event-driven Programming (EDP) is a programming paradigm.</li>
-<li>In an event-driven application, there is generally a main loop that listens for events and then triggers a callback function when one of those events is detected.</li>
-<li>The first step in developing an event-driven program is to write a series of subroutines, or methods.</li>
+<li>Add some attributes to the window (e.g. &quot;active&quot;, &quot;modal&quot;, etc.) to highlight the default controller and launch an invisible super controller.</li>
+<li>Pass the event to each controller in a specific order until the event is marked as handled.</li>
+<li>Pass an event to only one controller, but all controllers must route the event using the same rules.</li>
 </ul>
-<p>What is going wrong?</p>
-<p>The main problem is complexity. Hundreds of different methods for every occasion which need to be redefined to slightly change the logic of the interface. For example, if you count something, first you inherit the class and add a new variable, in constructor or any other method you initialize it, and finally, you can write a function to increase the variable.</p>
-<p>Consequences of the complexity of EDP - this is a lot of widgets for any occasion. In addition, this is a lot of window properties (modal, clickable, disabled, etc., etc.).</p>
-<p>Problems start with earlier versions of Windows, when the limitations of C++ led to a weird application logic called EDP. But now we have Go with goroutines and channels. Let's turn to simplicity. Let's cure the application code.</p>
-<p>First, the GUI application still consumes user input events such as keystrokes, mouse movement, etc. But when you need to focus on your own local logic, there should be an opportunity to implement all the logic in one place. You can use inheritance if you want, but you don't have to.</p>
-<p>Secondly, drawing, processing events and changing data are different tasks of the GUI application. When you implement complex logic, you may prefer to separate different tasks into different modules. But a simple GUI application or a simple GUI application element can be written in a simple way.</p>
-<p>Finally, an application can handle many windows at once. You can write a main loop if you want. When you use Go, you can run many goroutines for the event loop of each window, which will be executed simultaneously.</p>
-<p>But enough words, let's Go.</p>
+<p>There is no silver bullet except one.</p>
+<h1>Recommended event propagation rules</h1>
+<ul>
+<li>Controllers maintain hierarchical order. Each controller can have child controllers.</li>
+<li>In the case when several windows work in parallel, the parent controller keeps a list of parallel controllers in its own way.</li>
+<li>Each controller routes events differently. Some events can be routed to the child controller, while others can be handled itself.</li>
+</ul>
+<p>For example, a mouse click can be handled by itself or by a child controller. The controller can get the child window rectangle from the child controller and compare it to the click point. If a mouse click occurs in a child window, the controller can pass the event to the child controller and ignore its own event handler.</p>
+<h1>Basic use of event propagation module</h1>
+<p>The core of the module is the event channel between parent and child controller. The parent controller must create an <code>eventlink.EventLink</code> variable:</p>
+<pre><code>eventLink := eventlink.New(appFramer)
+</code></pre>
+<p>and link the child controller to run its <code>Action</code> method as a goroutine:</p>
+<pre><code>eventLink.Link(ctx, childController)
+</code></pre>
+<p>The child controller must implement <code>Actor</code> interface to work with <code>eventlink.EventLink</code>:</p>
+<pre><code>type Actor interface {
+	Action(ctx context.Context, app App)
+	Wait()
+}
+</code></pre>
+<p>Then at any time the parent controller can put an event to the child channel:</p>
+<pre><code>eventLink.Chan() &lt;- receivedEvent
+</code></pre>
+<p>On the childs side, the eternal <code>Action</code> method of the child controller receives the event from the channel, handles or ignores it and redraws the child state in its or any other window. The <code>eventlink.App</code> is a interface to get events, create child window, etc.</p>
+<p>The <code>eventlink.AppFramer</code> is a wrapper from <code>impress.Application</code> at the beginning:</p>
+<pre><code>var appFramer eventlink.AppFramer = eventlink.MainApp(application)
+</code></pre>
+<p><code>eventlink.App</code> may be used as <code>eventlink.AppFramer</code> parameter of <code>eventlink.New</code> to create a new link inside the child controller.</p>
+<p>See the <a href="https://pkg.go.dev/github.com/codeation/tile/eventlink">module documentation</a> and <a href="https://github.com/codeation/tile/tree/main/examples/actor">example</a> for details.</p>
+<h1>Shutdown scenarios</h1>
+<p>In a typical usecases, child controllers creates on start and run until parent Controller are still alive.</p>
+<p>More complex scenarios of parent and child controller coexistence are possible:</p>
+<ul>
+<li>Creating a new child controller to replace the old child controller.</li>
+<li>Closing a child controller due to some event on the parent or child side.</li>
+</ul>
+<p>To implement complex shutdown scenarios:</p>
+<ul>
+<li>The child controller should wait for <code>ctx.Done</code> in parallel with event waiting. If the context is canceled, the <code>Action</code> method must exit immediately. If some background child goroutines are still alive, the place to wait is the <code>Wait</code> method.</li>
+<li>The child controller can exit the <code>Action</code> method in case of any event. A parent can check the status of a child using the <code>childActor, isAlive := eventLink.Actor()</code> method.</li>
+<li>The <code>ctx</code> parameter of <code>Link</code> must be combined from the grandfathers context and can be canceled at any time.</li>
+<li>The parent controller can replace the child controller using the <code>Link</code> method with a new controller. Then the context of the replaced controller will be canceled.</li>
+<li>A parent controller can cancel a child controller's context via a call to <code>func (c *EventLink) Cancel()</code>.</li>
+</ul>
 
 
 
