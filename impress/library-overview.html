@@ -373,6 +373,7 @@ And again, and again.</p>
 <p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
 <p>The event loop continues forever until the user closes the application. <code>isExitAppAction(e)</code> is place to check if the event caused the application to quit immediately.</p>
 <p>If the application continues to run, then it's time to change the application's state in <code>changeAppState(e)</code>. The state of the application may remain the same if it is a useless event.</p>
+<p>See <a href="https://codeation.github.io/impress/event-propagation.html">Recommended event propagation module</a>.</p>
 <h1>Drawing</h1>
 <p>A window is created to draw something to inform the user. The contents of the window may change from time to time.</p>
 <p>To clear the previous contents of a window, call the <code>Clear()</code> method.</p>
@@ -394,6 +395,7 @@ And again, and again.</p>
 <li><a href="https://codeation.github.io/impress/library-overview.html">Library overview</a></li>
 <li><a href="https://codeation.github.io/impress/lazy-mode.html">Lazy mode</a></li>
 <li><a href="https://codeation.github.io/impress/event-propagation.html">Recommended event propagation module</a></li>
+<li><a href="https://codeation.github.io/impress/widget-compositing.html">Recommended way to customize a widget</a></li>
 <li><a href="https://codeation.github.io/impress/it-driver.html">GTK+ 3 terminal</a></li>
 <li><a href="https://codeation.github.io/impress/canvas-driver.html">WebAssembly terminal</a></li>
 <li><a href="https://codeation.github.io/impress/roadmap.html">Project roadmap</a></li>

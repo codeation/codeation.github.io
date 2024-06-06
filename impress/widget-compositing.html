@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"%s>
-<title>impress terminal. GTK&#43; 3 cross-platform version</title>
+<title>Recommended way to customize a widget</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <style>
@@ -319,93 +319,59 @@ a:hover {
 </div>
 
 <div class="column">
-<h1 class="title">impress terminal. GTK+ 3 cross-platform version</h1>
+<h1 class="title">Recommended way to customize a widget</h1>
     
-<h1>Overview</h1>
-<p>The impress library uses a separate application to low-level drawing.</p>
-<img src="https://codeation.github.io/images/it_scheme.png" width="580" height="274" />
-<p>The main GUI application contains pure Go code. There is not any low-level library required to build the main application. The impress terminal is running in parallel. Impress terminal was written in C and used the GTK-3 library. Named pipes are used to communicate between the main application and impress terminal.</p>
-<p>Impress terminal started and stopped by main application. By default, executable impress terminal binary launched from current directory. The environment variable <code>IMPRESS_TERMINAL_PATH</code> may be used to specify full pathname to impress terminal binary.</p>
-<p>Pros:</p>
+<h1>Composing a widget from elements</h1>
+<p>Widgets must implement conflicting requirements:</p>
 <ul>
-<li>To compile the application, it is not necessary to install low-level libraries.</li>
-<li>There are no additional restrictions on the application, such as GTK functions should only be called by the main thread.</li>
-<li>It will be possible to run several applications for a low-level drawing from different devices, thereby using the screens of different devices for the same application.</li>
-<li>Abnormal termination of low-level drawing application may not result in data loss.</li>
+<li>Ability to change any part of the widget to maintain your own GUI style.</li>
+<li>A clear way to add new widgets or modify existing widgets.</li>
 </ul>
-<p>Cons:</p>
-<ul>
-<li>Some loss of speed due to data transfer between applications.</li>
-<li>Additional complexity due to state synchronization between applications.</li>
-</ul>
-<p>You can <a href="https://github.com/codeation/it/releases">download</a>
-the compiled binary <code>it</code> file or make it again from <a href="https://github.com/codeation/it">the source</a>.</p>
-<h1>Building (Linux)</h1>
-<ol start="0">
-<li>
-<p>Install <code>gcc</code>, <code>make</code>, <a href="https://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> if you don't have them installed.</p>
-</li>
-<li>
-<p>Currently, the application uses <a href="https://www.gtk.org">GTK+ 3</a> for rendering, event collecting, etc. You should install <code>libgtk+-3.0</code> and packages that depend on GTK. On Debian/ Ubuntu you can run:</p>
-</li>
-</ol>
-<pre><code>sudo apt-get install libgtk-3-dev
+<p>In <a href="https://github.com/codeation/tile">the tile library</a>, widgets are a composition of primitive elements to achieve the desired style.</p>
+<p>For example, a simple button contains a text label element included within a padding element that is enclosed within a border element.</p>
+<p>Sounds complicated, but the code chain looks simple:</p>
+<pre><code>    label := labelview.New(&quot;Click me&quot;, ...)
+    margin := margin.New(label, ...)
+    button := box.New(margin, ...)
+    return button
 </code></pre>
-<ol start="2">
-<li>Build impress terminal from source:</li>
-</ol>
-<pre><code>git clone https://github.com/codeation/it.git
-cd it
-make
-cd ..
+<p>To be part of a composition, each chain element must implement a Viewer interface:</p>
+<pre><code>type Viewer interface {
+	Size(size image.Point) image.Point
+	Draw(w *impress.Window, rect image.Rectangle)
+}
 </code></pre>
-<h1>Building (Debian 12 + docker)</h1>
-<p>To build binary without installing additional packages:</p>
-<pre><code>git clone https://github.com/codeation/it.git
-cd it
-./build.sh
-cd ..
+<p>To customize the button's style (by adding a shadow, for example), you need to implement a new element that matches the interface.</p>
+<pre><code>module shadow
+
+type Shadow struct {
+    view.Viewer
+    ... // any custom parameters
+}
+
+func New(viewer view.Viewer, ...) *Shadow {
+    return &amp;Shadow{
+        Viewer: viewer,
+        ...
+    }
+}
+
+func (v *Shadow) Draw(w *impress.Window, rect image.Rectangle) {
+    v.Viewer.Draw(w, rect)
+    ... // any extra drawing
+}
 </code></pre>
-<p>This command creates a container with libgtk-3-dev packages from the gcc compiler container. The build is done inside the docker container without installing additional packages on the host.</p>
-<p>Once the build is complete, the docker images can be removed using the <code>docker image rm</code> command. You can remove containers named:</p>
-<pre><code>amd64/gcc or arm64v8/gcc
-it-build/gcc
+<p>And extend the code chain to create a new button:</p>
+<pre><code>    var button view.Viewer
+    button = labelview.New(&quot;Click me&quot;, ...)
+    button = margin.New(button, ...)
+    button = box.New(button, ...)
+    button = shadow.New(button, ...)
+    return button
 </code></pre>
-<p><em>On Debian 12.0, <code>libharfbuzz-gobject</code> should be installed. If you are getting <code>error while loading shared libraries: libharfbuzz-gobject.so.0: cannot open shared object file: No such file or directory</code>, run <code>sudo apt-get install libharfbuzz-gobject0</code>.</em></p>
-<h1>Building (macOS)</h1>
-<ol start="0">
-<li>
-<p>Install <a href="https://brew.sh/">Homebrew</a> if you don't have installed.</p>
-</li>
-<li>
-<p>To install <a href="https://www.gtk.org">GTK+ 3</a> run:</p>
-</li>
-</ol>
-<pre><code>brew install gtk+3
-</code></pre>
-<ol start="2">
-<li>To install <code>pkg-config</code> run:</li>
-</ol>
-<pre><code>brew install pkg-config
-</code></pre>
-<ol start="3">
-<li>Build impress terminal from source:</li>
-</ol>
-<pre><code>git clone https://github.com/codeation/it.git
-cd it
-make
-cd ..
-</code></pre>
-<p><em>The latest releases aren't tested on Apple Silicon machines. The earlier version tested on both Intel and Silicon platform and worked well. Please, open <a href="https://github.com/codeation/impress/issues">issue</a>, if some bugs have raised. MRs are welcome too.</em></p>
-<h1>Download</h1>
-<p>You can download the compiled binary <code>it</code> file on the <a href="https://github.com/codeation/it/releases">&quot;releases&quot;</a> page.</p>
-<p>Github Actions builds binaries since v0.2.4 to prevent any corruption. Make sure the release is built from a signed commit.</p>
-<p>Please, check and verify the sha256 sum for downloaded files from previous releases.</p>
-<p>The <code>codeation</code> GPG key (Id <code>A8109B6877BC845E</code>) is used to sign commits in the main branch.</p>
-<h1>Source code</h1>
-<p><a href="https://github.com/codeation/it">github.com/codeation/it</a></p>
-<h1>Issues</h1>
-<p>Feel free to open <a href="https://github.com/codeation/impress/issues">issue</a></p>
+<p>The new element can be used to customize the style of any other widgets.</p>
+<p>The widget composition code must be part of the application, not the widget library.</p>
+<p>See a <a href="https://pkg.go.dev/github.com/codeation/tile/view">collection of widget element</a> as a starting point.</p>
 
 
 
