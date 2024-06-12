@@ -343,23 +343,23 @@ a:hover {
 <p>For example, a mouse click can be handled by itself or by a child controller. The controller can get the child window rectangle from the child controller and compare it to the click point. If a mouse click occurs in a child window, the controller can pass the event to the child controller and ignore its own event handler.</p>
 <h1>Basic use of event propagation module</h1>
 <p>The core of the module is the event channel between parent and child controller. The parent controller must create an <code>eventlink.EventLink</code> variable:</p>
-<pre><code>eventLink := eventlink.New(appFramer)
+<pre><code>    eventLink := eventlink.New(appFramer)
 </code></pre>
 <p>and link the child controller to run its <code>Action</code> method as a goroutine:</p>
-<pre><code>eventLink.Link(ctx, childController)
+<pre><code>    eventLink.Link(ctx, childController)
 </code></pre>
 <p>The child controller must implement <code>Actor</code> interface to work with <code>eventlink.EventLink</code>:</p>
 <pre><code>type Actor interface {
-	Action(ctx context.Context, app App)
-	Wait()
+    Action(ctx context.Context, app App)
+    Wait()
 }
 </code></pre>
 <p>Then at any time the parent controller can put an event to the child channel:</p>
-<pre><code>eventLink.Chan() &lt;- receivedEvent
+<pre><code>    eventLink.Chan() &lt;- receivedEvent
 </code></pre>
 <p>On the childs side, the eternal <code>Action</code> method of the child controller receives the event from the channel, handles or ignores it and redraws the child state in its or any other window. The <code>eventlink.App</code> is a interface to get events, create child window, etc.</p>
 <p>The <code>eventlink.AppFramer</code> is a wrapper from <code>impress.Application</code> at the beginning:</p>
-<pre><code>var appFramer eventlink.AppFramer = eventlink.MainApp(application)
+<pre><code>    var appFramer eventlink.AppFramer = eventlink.MainApp(application)
 </code></pre>
 <p><code>eventlink.App</code> may be used as <code>eventlink.AppFramer</code> parameter of <code>eventlink.New</code> to create a new link inside the child controller.</p>
 <p>See the <a href="https://pkg.go.dev/github.com/codeation/tile/eventlink">module documentation</a> and <a href="https://github.com/codeation/tile/tree/main/examples/actor">example</a> for details.</p>

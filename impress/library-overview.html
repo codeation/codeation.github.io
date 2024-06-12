@@ -324,27 +324,28 @@ a:hover {
 <h1>Application</h1>
 <p><code>impress.Application</code> is the basic struct of GUI application. It's an edges of the main rectangle, a source of events from a user, and something under the hood.</p>
 <p>To create application <code>impress.Application</code> and close it:</p>
-<pre><code>app := impress.NewApplication(image.Rect(0, 0, 640, 480), &quot;Main&quot;)
-defer app.Close()
+<pre><code>    app := impress.NewApplication(image.Rect(0, 0, 640, 480), &quot;Main&quot;)
+    defer app.Close()
 </code></pre>
 <p><code>image.Rect()</code> is a coordinates of the main window. A rectangle contains the upper left corner (x = 0, y = 0) and the bottom right corner (x = 640, y = 480) coordinates. <code>x</code> points to a column in pixels (from left to right), and <code>y</code> points to a row (from top to bottom). The &quot;Main&quot; string is a window title.</p>
 <p><code>app.Close()</code> at the end will hide the application window and do something else.</p>
 <p>The <code>app.Sync()</code> should finalize draw calls.</p>
-<pre><code>app.Sync()
+<pre><code>    app.Sync()
 </code></pre>
 <p>One more thing. We plan to wait until the user destroy something in an application:</p>
-<pre><code>for {
-	e := &lt;-app.Chan()
-	if e == event.DestroyEvent || e == event.KeyExit {
-		break
-	}
-}
+<pre><code>    for {
+        e := &lt;-app.Chan()
+        if e == event.DestroyEvent || e == event.KeyExit {
+            break
+        }
+    }
 </code></pre>
 <p>Where <code>e := &lt;-app.Chan()</code> is an event like a mouse event, keyboard event, etc. <code>app.Chan()</code> func returns an event channel, by the way.</p>
+<p>By default, all event kinds are sent to the event channel, no configuration is required. See <a href="https://pkg.go.dev/github.com/codeation/impress/event">documentation</a> for event types and parameters.</p>
 <h1>Window</h1>
 <p>Even if you don't like windows, you usually need a white place for drawing. The <code>app.NewWindow()</code> parameters are the size and background color, for example:</p>
-<pre><code>w := app.NewWindow(image.Rect(0, 0, 320, 480), color.RGBA{255, 255, 255, 255})
-defer w.Drop()
+<pre><code>    w := app.NewWindow(image.Rect(0, 0, 320, 480), color.RGBA{255, 255, 255, 255})
+    defer w.Drop()
 </code></pre>
 <p>First <code>image.Rect</code> is a place within an application bounds. Values of <code>color.RGBA</code> are RGBA, as always 0..255 each.</p>
 <p>Typically, an application opens and closes many windows in a lifetime. <code>w.Drop()</code> is necessary to hide the window and release its resources.</p>
@@ -354,22 +355,22 @@ defer w.Drop()
 <p>The GUI application redraws its state to keep user in touch. The application receives events. An event can change the state of an application.
 And again, and again.</p>
 <p>In general, the event loop looks like this:</p>
-<pre><code>for {
-	if len(app.Chan()) == 0 {
-		redrawAppState()
-		app.Sync()
-	}
+<pre><code>    for {
+        if len(app.Chan()) == 0 {
+            redrawAppState()
+            app.Sync()
+        }
 
-	e := &lt;- app.Chan()
-	if isExitAppAction(e) {
-		return
-	}
+        e := &lt;- app.Chan()
+        if isExitAppAction(e) {
+            return
+        }
 
-	changeAppState(e)
-}
+        changeAppState(e)
+    }
 </code></pre>
 <p><code>len(app.Chan()) == 0</code> checks if a new event has arrived. There is no need to draw every intermediate state of the application if there is a new event. It is ok to draw the last state in the case when the user quickly types a lot of characters.</p>
-<p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same. The library implements <a href="https://codeation.github.io/impress/lazy-mode.html"><code>lazy mode</code></a> drawing.</p>
+<p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same.</p>
 <p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
 <p>The event loop continues forever until the user closes the application. <code>isExitAppAction(e)</code> is place to check if the event caused the application to quit immediately.</p>
 <p>If the application continues to run, then it's time to change the application's state in <code>changeAppState(e)</code>. The state of the application may remain the same if it is a useless event.</p>
@@ -381,7 +382,7 @@ And again, and again.</p>
 <p>The font for drawing a text string must be opened before and destroyed after everything. Font attributes such as font family, height can be specified on opening. JSON with font parameters depends on the platform. The config file is a perfect place for font options like <code>{&quot;family&quot;: &quot;Sans&quot;, &quot;style&quot;: &quot;italic&quot;, &quot;variant&quot;: &quot;normal&quot;, &quot;weight&quot;: &quot;bold&quot;, &quot;stretch&quot;: &quot;condensed&quot;}</code>.</p>
 <p>The image to draw image must be opened before and destroyed after. Since an image takes up a lot of memory, destroy unused images as soon as possible.</p>
 <p>To make the content visible, call the <code>Show()</code> method after the window's content is ready.</p>
-<p>There is no need to touch the contents of the window if the drawing should be the same.</p>
+<p>There is no need to touch the contents of the window if the drawing should be the same. The library implements <a href="https://codeation.github.io/impress/lazy-mode.html"><code>lazy mode</code></a> drawing.</p>
 <p>To change window position, call <code>Size()</code> method. This call does not change the contents of the window.</p>
 <p>The created window is drawn on top of previous windows. To move any window on top, call the <code>Raise()</code> method. This call does not change the contents of the window.</p>
 <p>See <a href="https://github.com/codeation/impress/blob/master/examples/">examples folders</a> and <a href="https://pkg.go.dev/github.com/codeation/impress">documentation</a>.</p>

@@ -337,8 +337,8 @@ a:hover {
 </code></pre>
 <p>To be part of a composition, each chain element must implement a Viewer interface:</p>
 <pre><code>type Viewer interface {
-	Size(size image.Point) image.Point
-	Draw(w *impress.Window, rect image.Rectangle)
+    Size(size image.Point) image.Point
+    Draw(w *impress.Window, rect image.Rectangle)
 }
 </code></pre>
 <p>To customize the button's style (by adding a shadow, for example), you need to implement a new element that matches the interface.</p>

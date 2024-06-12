@@ -325,44 +325,44 @@ a:hover {
 <p><code>Lazy mode</code> is a library layer that prevents the contents of a window from being redrawn if the contents of the window remain the same.</p>
 <h1>Reason for lazy mode</h1>
 <p>The event loop of a typical GUI application looks like this:</p>
-<pre><code>changed := true
-for {
-    // Redraw application state
-    if changed {
-        redrawAppState()
+<pre><code>    changed := true
+    for {
+        // Redraw application state
+        if changed {
+            redrawAppState()
+        }
+
+        // Get next event
+        ev := &lt;- app.Chan()
+
+        // Close application at the end
+        if isExitAppAction(ev) {
+            break
+        }
+
+        // Change state of application
+        changed = changeAppState(ev)
     }
-
-    // Get next event
-    ev := &lt;- app.Chan()
-
-    // Close application at the end
-    if isExitAppAction(ev) {
-        break
-    }
-
-    // Change state of application
-    changed = changeAppState(ev)
-}
 </code></pre>
 <p>Redrawing after each event can slow down the GUI application and cause flickering. It makes sense to draw only when the visual representation has changed.</p>
 <p>How do you know if the visual representation is not the same? The state depends on the string values of the fields, the positions of many elements, the colors of these elements, etc. All values must be saved for comparison after a state change. To remove this logic from a GUI application, the library contains a <code>lazy mode</code> layer. It stores raw drawing commands for all windows and redraws window if the new sequence of drawing commands is different.</p>
 <p>Since <code>lazy mode</code> does not impact library performance, it is enabled by default.</p>
 <p>In <code>lazy mode</code>, the event loop might look simpler:</p>
-<pre><code>for {
-    // Redraw application state
-    redrawAppState()
+<pre><code>    for {
+        // Redraw application state
+        redrawAppState()
 
-    // Get next event
-    ev := &lt;- app.Chan()
+        // Get next event
+        ev := &lt;- app.Chan()
 
-    // Close application at the end
-    if isExitAppAction(ev) {
-        break
+        // Close application at the end
+        if isExitAppAction(ev) {
+            break
+        }
+
+        // Change state of application
+        changeAppState(ev)
     }
-
-    // Change state of application
-    changeAppState(ev)
-}
 </code></pre>
 <p>For details on the event loop, see <a href="https://codeation.github.io/impress/library-overview.html">Library Overview</a>.</p>
 
