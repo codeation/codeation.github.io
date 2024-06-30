@@ -343,7 +343,7 @@ a:hover {
 <p>Where <code>e := &lt;-app.Chan()</code> is an event like a mouse event, keyboard event, etc. <code>app.Chan()</code> func returns an event channel, by the way.</p>
 <p>By default, all event kinds are sent to the event channel, no configuration is required. See <a href="https://pkg.go.dev/github.com/codeation/impress/event">documentation</a> for event types and parameters.</p>
 <h1>Window</h1>
-<p>Even if you don't like windows, you usually need a white place for drawing. The <code>app.NewWindow()</code> parameters are the size and background color, for example:</p>
+<p>Window is a rectangle space for drawing. The <code>app.NewWindow()</code> parameters are the size and background color, for example:</p>
 <pre><code>    w := app.NewWindow(image.Rect(0, 0, 320, 480), color.RGBA{255, 255, 255, 255})
     defer w.Drop()
 </code></pre>
@@ -362,7 +362,7 @@ And again, and again.</p>
         }
 
         e := &lt;- app.Chan()
-        if isExitAppAction(e) {
+        if isExitAppEvent(e) {
             return
         }
 
@@ -372,7 +372,7 @@ And again, and again.</p>
 <p><code>len(app.Chan()) == 0</code> checks if a new event has arrived. There is no need to draw every intermediate state of the application if there is a new event. It is ok to draw the last state in the case when the user quickly types a lot of characters.</p>
 <p>Inside <code>redrawAppState()</code> application windows must be redrawn. No redraws are required if the state of the application remains the same.</p>
 <p>The <code>app.Sync()</code> should finalize the sequence of drawing calls. Last draw calls will wait forever in library buffers without <code>app.Sync()</code>.</p>
-<p>The event loop continues forever until the user closes the application. <code>isExitAppAction(e)</code> is place to check if the event caused the application to quit immediately.</p>
+<p>The event loop continues forever until the user closes the application. <code>isExitAppEvent(e)</code> is place to check if the event caused the application to quit immediately.</p>
 <p>If the application continues to run, then it's time to change the application's state in <code>changeAppState(e)</code>. The state of the application may remain the same if it is a useless event.</p>
 <p>See <a href="https://codeation.github.io/impress/event-propagation.html">Recommended event propagation module</a>.</p>
 <h1>Drawing</h1>

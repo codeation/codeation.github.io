@@ -327,26 +327,28 @@ a:hover {
 <p>View modules (V letter) should display the current state of the model to the user. For example, the View module in the mind map editor draws node text, borders, lines between nodes, cursor, etc. View modules can be complex because the graphic design style is a valuable part of a GUI application. But the core logic of View modules is simple - to display the current state of the model to the user.</p>
 <p>Controller modules (C letter) must receive user events, call Model to change its state, and call View to display the model's new state to the user. For example, the control module in the mind map editor draws a mind map, waits for a new event, and in a switch statement for each possible type of event changes the contents of the mind map. And again.</p>
 <p>If your application contains two or more controller modules, you must use additional rules to separate events between different application windows.</p>
-<p>Some of the options:</p>
+<p>Some of an options:</p>
 <ul>
 <li>Add some attributes to the window (e.g. &quot;active&quot;, &quot;modal&quot;, etc.) to highlight the default controller and launch an invisible super controller.</li>
 <li>Pass the event to each controller in a specific order until the event is marked as handled.</li>
+</ul>
+<p>Recommended option:</p>
+<ul>
 <li>Pass an event to only one controller, but all controllers must route the event using the same rules.</li>
 </ul>
-<p>There is no silver bullet except one.</p>
 <h1>Recommended event propagation rules</h1>
 <ul>
-<li>Controllers maintain hierarchical order. Each controller can have child controllers.</li>
+<li>Controllers maintain hierarchical order. Each controller has child controllers.</li>
 <li>In the case when several windows work in parallel, the parent controller keeps a list of parallel controllers in its own way.</li>
-<li>Each controller routes events differently. Some events can be routed to the child controller, while others can be handled itself.</li>
+<li>Each controller routes events differently. Some events will be forwarded to the child controller, while others will be handled itself.</li>
 </ul>
 <p>For example, a mouse click can be handled by itself or by a child controller. The controller can get the child window rectangle from the child controller and compare it to the click point. If a mouse click occurs in a child window, the controller can pass the event to the child controller and ignore its own event handler.</p>
 <h1>Basic use of event propagation module</h1>
 <p>The core of the module is the event channel between parent and child controller. The parent controller must create an <code>eventlink.EventLink</code> variable:</p>
-<pre><code>    eventLink := eventlink.New(appFramer)
+<pre><code>    eventLink := eventlink.New()
 </code></pre>
 <p>and link the child controller to run its <code>Action</code> method as a goroutine:</p>
-<pre><code>    eventLink.Link(ctx, childController)
+<pre><code>    eventLink.Link(ctx, appFramer, childController)
 </code></pre>
 <p>The child controller must implement <code>Actor</code> interface to work with <code>eventlink.EventLink</code>:</p>
 <pre><code>type Actor interface {
@@ -361,7 +363,7 @@ a:hover {
 <p>The <code>eventlink.AppFramer</code> is a wrapper from <code>impress.Application</code> at the beginning:</p>
 <pre><code>    var appFramer eventlink.AppFramer = eventlink.MainApp(application)
 </code></pre>
-<p><code>eventlink.App</code> may be used as <code>eventlink.AppFramer</code> parameter of <code>eventlink.New</code> to create a new link inside the child controller.</p>
+<p><code>eventlink.App</code> may be used as <code>eventlink.AppFramer</code> parameter of <code>eventlink.Link</code> to create a new link inside the child controller.</p>
 <p>See the <a href="https://pkg.go.dev/github.com/codeation/tile/eventlink">module documentation</a> and <a href="https://github.com/codeation/tile/tree/main/examples/actor">example</a> for details.</p>
 <h1>Shutdown scenarios</h1>
 <p>In a typical usecases, child controllers creates on start and run until parent Controller are still alive.</p>
