@@ -330,11 +330,10 @@ a:hover {
 <p>What is going wrong?</p>
 <p>The main problem is complexity. Hundreds of different methods for every occasion which need to be redefined to slightly change the logic of the interface. For example, if you count something, first you inherit the class and add a new variable, in constructor or any other method you initialize it, and finally, you can write a function to increase the variable.</p>
 <p>Consequences of the complexity of EDP - this is a lot of widgets for any occasion. In addition, this is a lot of window properties (modal, clickable, disabled, etc., etc.).</p>
-<p>Problems start with earlier versions of Windows, when the limitations of C++ led to a weird application logic called EDP. But now we have Go with goroutines and channels. Let's turn to simplicity. Let's cure the application code.</p>
+<p>Problems start with earlier versions of Windows, when the limitations of C++ led to a weird application logic called EDP. But now we have Go with goroutines and channels. Let's turn to simplicity.</p>
 <p>First, the GUI application still consumes user input events such as keystrokes, mouse movement, etc. But when you need to focus on your own local logic, there should be an opportunity to implement all the logic in one place. You can use inheritance if you want, but you don't have to.</p>
 <p>Secondly, drawing, processing events and changing data are different tasks of the GUI application. When you implement complex logic, you may prefer to separate different tasks into different modules. But a simple GUI application or a simple GUI application element can be written in a simple way.</p>
 <p>Finally, an application can handle many windows at once. You can write a main loop if you want. When you use Go, you can run many goroutines for the event loop of each window, which will be executed simultaneously.</p>
-<p>But enough words, let's Go.</p>
 
 
 
