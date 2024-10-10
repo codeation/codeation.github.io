@@ -348,7 +348,7 @@ func main() {
     app := impress.NewApplication(image.Rect(0, 0, 480, 240), &quot;Hello World Application&quot;)
     defer app.Close()
 
-    font := impress.NewFont(15, map[string]string{&quot;family&quot;: &quot;Verdana&quot;})
+    font := app.NewFont(15, map[string]string{&quot;family&quot;: &quot;Verdana&quot;})
     defer font.Close()
 
     w := app.NewWindow(image.Rect(0, 0, 480, 240), color.RGBA{240, 240, 240, 255})
