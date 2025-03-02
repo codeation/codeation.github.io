@@ -328,12 +328,12 @@ a:hover {
 <li>The first step in developing an event-driven program is to write a series of subroutines, or methods.</li>
 </ul>
 <p>What is going wrong?</p>
-<p>The main problem is complexity. Hundreds of different methods for every occasion which need to be redefined to slightly change the logic of the interface. For example, if you count something, first you inherit the class and add a new variable, in constructor or any other method you initialize it, and finally, you can write a function to increase the variable.</p>
-<p>Consequences of the complexity of EDP - this is a lot of widgets for any occasion. In addition, this is a lot of window properties (modal, clickable, disabled, etc., etc.).</p>
-<p>Problems start with earlier versions of Windows, when the limitations of C++ led to a weird application logic called EDP. But now we have Go with goroutines and channels. Let's turn to simplicity.</p>
-<p>First, the GUI application still consumes user input events such as keystrokes, mouse movement, etc. But when you need to focus on your own local logic, there should be an opportunity to implement all the logic in one place. You can use inheritance if you want, but you don't have to.</p>
-<p>Secondly, drawing, processing events and changing data are different tasks of the GUI application. When you implement complex logic, you may prefer to separate different tasks into different modules. But a simple GUI application or a simple GUI application element can be written in a simple way.</p>
-<p>Finally, an application can handle many windows at once. You can write a main loop if you want. When you use Go, you can run many goroutines for the event loop of each window, which will be executed simultaneously.</p>
+<p>The main problem is complexity. There are hundreds of different methods for every occasion, which need to be redefined to slightly change the logic of the interface. For example, if you need to count something, first you inherit the class and add a new variable, then you initialize it in the constructor or any other method, and finally, you write a function to increase the variable.</p>
+<p>The consequences of the complexity of EDP include a lot of widgets for any occasion and numerous window properties (modal, clickable, disabled, etc.).</p>
+<p>Problems started with earlier versions of Windows when the limitations of C++ led to a convoluted application logic called EDP. But now we have Go with goroutines and channels, which allows us to turn to simplicity.</p>
+<p>Firstly, the GUI application still consumes user input events such as keystrokes and mouse movements. However, when you need to focus on your own local logic, there should be an opportunity to implement all the logic in one place. You can use inheritance if you want, but it is not mandatory.</p>
+<p>Secondly, drawing, processing events, and changing data are different tasks of a GUI application. When implementing complex logic, you may prefer to separate different tasks into different modules. However, a simple GUI application or a simple GUI application element can be written in a straightforward way.</p>
+<p>Finally, an application can handle many windows at once. You can write a main loop if you want. When using Go, you can run multiple goroutines for the event loop of each window, which will be executed simultaneously.</p>
 
 
 
