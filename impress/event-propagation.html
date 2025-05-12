@@ -327,7 +327,7 @@ a:hover {
 <p>View modules (V letter) should display the current state of the model to the user. For example, the View module in the mind map editor draws node text, borders, lines between nodes, cursor, etc. View modules can be complex because the graphic design style is a valuable part of a GUI application. But the core logic of View modules is simple - to display the current state of the model to the user.</p>
 <p>Controller modules (C letter) must receive user events, call Model to change its state, and call View to display the model's new state to the user. For example, the control module in the mind map editor draws a mind map, waits for a new event, and in a switch statement for each possible type of event changes the contents of the mind map. And again.</p>
 <p>If your application contains two or more controller modules, you must use additional rules to separate events between different application windows.</p>
-<p>Some of an options:</p>
+<p>Some options:</p>
 <ul>
 <li>Add some attributes to the window (e.g. &quot;active&quot;, &quot;modal&quot;, etc.) to highlight the default controller and launch an invisible super controller.</li>
 <li>Pass the event to each controller in a specific order until the event is marked as handled.</li>
@@ -338,35 +338,35 @@ a:hover {
 </ul>
 <h1>Recommended event propagation rules</h1>
 <ul>
-<li>Controllers maintain hierarchical order. Each controller has child controllers.</li>
+<li>Controllers maintain hierarchical order. Each controller can have child controllers.</li>
 <li>In the case when several windows work in parallel, the parent controller keeps a list of parallel controllers in its own way.</li>
-<li>Each controller routes events differently. Some events will be forwarded to the child controller, while others will be handled itself.</li>
+<li>Each controller routes events differently. Some events will be forwarded to the child controller, while others will be handled by itself.</li>
 </ul>
 <p>For example, a mouse click can be handled by itself or by a child controller. The controller can get the child window rectangle from the child controller and compare it to the click point. If a mouse click occurs in a child window, the controller can pass the event to the child controller and ignore its own event handler.</p>
 <h1>Basic use of event propagation module</h1>
 <p>The core of the module is the event channel between parent and child controller. The parent controller must create an <code>eventlink.EventLink</code> variable:</p>
-<pre><code>    eventLink := eventlink.New()
+<pre><code>eventLink := eventlink.New()
 </code></pre>
 <p>and link the child controller to run its <code>Action</code> method as a goroutine:</p>
-<pre><code>    eventLink.Link(ctx, appFramer, childController)
+<pre><code>eventLink.Link(ctx, appFramer, childController)
 </code></pre>
-<p>The child controller must implement <code>Actor</code> interface to work with <code>eventlink.EventLink</code>:</p>
+<p>The child controller must implement the <code>Actor</code> interface to work with <code>eventlink.EventLink</code>:</p>
 <pre><code>type Actor interface {
     Action(ctx context.Context, app App)
     Wait()
 }
 </code></pre>
-<p>Then at any time the parent controller can put an event to the child channel:</p>
-<pre><code>    eventLink.Chan() &lt;- receivedEvent
+<p>Then at any time the parent controller can put an event into the child channel:</p>
+<pre><code>eventLink.Chan() &lt;- receivedEvent
 </code></pre>
-<p>On the childs side, the eternal <code>Action</code> method of the child controller receives the event from the channel, handles or ignores it and redraws the child state in its or any other window. The <code>eventlink.App</code> is a interface to get events, create child window, etc.</p>
+<p>On the child's side, the eternal <code>Action</code> method of the child controller receives the event from the channel, handles or ignores it, and redraws the child state in its or any other window. The <code>eventlink.App</code> is an interface to get events, create a child window, etc.</p>
 <p>The <code>eventlink.AppFramer</code> is a wrapper from <code>impress.Application</code> at the beginning:</p>
-<pre><code>    var appFramer eventlink.AppFramer = eventlink.MainApp(application)
+<pre><code>var appFramer eventlink.AppFramer = eventlink.MainApp(application)
 </code></pre>
-<p><code>eventlink.App</code> may be used as <code>eventlink.AppFramer</code> parameter of <code>eventlink.Link</code> to create a new link inside the child controller.</p>
+<p><code>eventlink.App</code> may be used as an <code>eventlink.AppFramer</code> parameter of <code>eventlink.Link</code> to create a new link inside the child controller.</p>
 <p>See the <a href="https://pkg.go.dev/github.com/codeation/tile/eventlink">module documentation</a> and <a href="https://github.com/codeation/tile/tree/main/examples/actor">example</a> for details.</p>
 <h1>Shutdown scenarios</h1>
-<p>In a typical usecases, child controllers creates on start and run until parent Controller are still alive.</p>
+<p>In typical use cases, child controllers are created at the start and run until the parent controller is still alive.</p>
 <p>More complex scenarios of parent and child controller coexistence are possible:</p>
 <ul>
 <li>Creating a new child controller to replace the old child controller.</li>
@@ -376,7 +376,7 @@ a:hover {
 <ul>
 <li>The child controller should wait for <code>ctx.Done</code> in parallel with event waiting. If the context is canceled, the <code>Action</code> method must exit immediately. If some background child goroutines are still alive, the place to wait is the <code>Wait</code> method.</li>
 <li>The child controller can exit the <code>Action</code> method in case of any event. A parent can check the status of a child using the <code>childActor, isAlive := eventLink.Actor()</code> method.</li>
-<li>The <code>ctx</code> parameter of <code>Link</code> must be combined from the grandfathers context and can be canceled at any time.</li>
+<li>The <code>ctx</code> parameter of <code>Link</code> must be combined from the grandfather's context and can be canceled at any time.</li>
 <li>The parent controller can replace the child controller using the <code>Link</code> method with a new controller. Then the context of the replaced controller will be canceled.</li>
 <li>A parent controller can cancel a child controller's context via a call to <code>func (c *EventLink) Cancel()</code>.</li>
 </ul>
@@ -391,7 +391,7 @@ a:hover {
 <li><a href="https://codeation.github.io/impress/lazy-mode.html">Lazy mode</a></li>
 <li><a href="https://codeation.github.io/impress/event-propagation.html">Recommended event propagation module</a></li>
 <li><a href="https://codeation.github.io/impress/widget-compositing.html">Recommended way to customize a widget</a></li>
-<li><a href="https://codeation.github.io/impress/it-driver.html">GTK+ 3 terminal</a></li>
+<li><a href="https://codeation.github.io/impress/it-driver.html">GTK 3 terminal</a></li>
 <li><a href="https://codeation.github.io/impress/canvas-driver.html">WebAssembly terminal</a></li>
 <li><a href="https://codeation.github.io/impress/roadmap.html">Project roadmap</a></li>
 <li><a href="https://codeation.github.io/impress/what-is-wrong-with-event-oriented-programming.html">&quot;What's wrong with event-driven programming&quot;</a></li>
