@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"%s>
-<title>impress terminal. GTK 3 cross-platform version</title>
+<title>impress terminal. GTK cross-platform version</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <style>
@@ -319,13 +319,13 @@ a:hover {
 </div>
 
 <div class="column">
-<h1 class="title">impress terminal. GTK 3 cross-platform version</h1>
+<h1 class="title">impress terminal. GTK cross-platform version</h1>
     
 <h1>Overview</h1>
 <p>The impress library uses a separate application to low-level drawing.</p>
 <img src="https://codeation.github.io/images/it_scheme.png" width="580" height="274" />
-<p>The main GUI application contains pure Go code. There is not any low-level library required to build the main application. The impress terminal is running in parallel. Impress terminal was written in C and used the GTK 3 library. Named pipes are used to communicate between the main application and impress terminal.</p>
-<p>Impress terminal started and stopped by main application. By default, executable impress terminal binary launched from current directory. The environment variable <code>IMPRESS_TERMINAL_PATH</code> may be used to specify full pathname to impress terminal binary.</p>
+<p>The main GUI application contains pure Go code. There is not any low-level library required to build the main application. The impress terminal is running in parallel. Impress terminal was written in C and used the GTK library. Named pipes are used to communicate between the main application and impress terminal.</p>
+<p>Impress terminal started and stopped by main application. By default, executable impress terminal binary launched from main application directory or working directory. The environment variable <code>IMPRESS_TERMINAL_PATH</code> may be used to specify full pathname to impress terminal binary.</p>
 <p>Pros:</p>
 <ul>
 <li>To compile the application, it is not necessary to install low-level libraries.</li>
@@ -340,13 +340,33 @@ a:hover {
 </ul>
 <p>You can <a href="https://github.com/codeation/it/releases">download</a>
 the compiled binary <code>it</code> file or make it again from <a href="https://github.com/codeation/it">the source</a>.</p>
-<h1>Building (Linux)</h1>
+<p>Impress terminal GTK 3 and GTK 4 versions are provided.</p>
+<h1>Building (Linux, GTK 4)</h1>
 <ol start="0">
 <li>
-<p>Install <code>gcc</code>, <code>make</code>, <a href="https://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> if you don't have them installed.</p>
+<p>Install <code>gcc</code>, <code>make</code>, <code>pkg-config</code> if you don't have them installed.</p>
 </li>
 <li>
-<p>Currently, the application uses <a href="https://www.gtk.org">GTK 3</a> for rendering, event collecting, etc. You should install <code>libgtk+-3.0</code> and packages that depend on GTK. On Debian/ Ubuntu you can run:</p>
+<p>You should install GTK and packages that depend on GTK. On Debian/ Ubuntu you can run:</p>
+</li>
+</ol>
+<pre><code>sudo apt-get install libgtk-4-dev
+</code></pre>
+<ol start="2">
+<li>Build impress terminal from source:</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/it.git
+cd it/four
+make
+cd ../..
+</code></pre>
+<h1>Building (Linux, GTK 3)</h1>
+<ol start="0">
+<li>
+<p>Install <code>gcc</code>, <code>make</code>, <code>pkg-config</code> if you don't have them installed.</p>
+</li>
+<li>
+<p>You should install GTK and packages that depend on GTK. On Debian/ Ubuntu you can run:</p>
 </li>
 </ol>
 <pre><code>sudo apt-get install libgtk-3-dev
@@ -359,34 +379,37 @@ cd it
 make
 cd ..
 </code></pre>
-<h1>Building (Debian 12 + docker)</h1>
-<p>To build binary without installing additional packages:</p>
-<pre><code>git clone https://github.com/codeation/it.git
-cd it
-./build.sh
-cd ..
-</code></pre>
-<p>This command creates a container with libgtk-3-dev packages from the gcc compiler container. The build is done inside the docker container without installing additional packages on the host.</p>
-<p>Once the build is complete, the docker images can be removed using the <code>docker image rm</code> command. You can remove containers named:</p>
-<pre><code>amd64/gcc or arm64v8/gcc
-it-build/gcc
-</code></pre>
-<p><em>On Debian 12.0, <code>libharfbuzz-gobject</code> should be installed. If you are getting <code>error while loading shared libraries: libharfbuzz-gobject.so.0: cannot open shared object file: No such file or directory</code>, run <code>sudo apt-get install libharfbuzz-gobject0</code>.</em></p>
-<h1>Building (macOS)</h1>
+<h1>Building (macOS, GTK 4)</h1>
 <ol start="0">
-<li>
-<p>Install <a href="https://brew.sh/">Homebrew</a> if you don't have installed.</p>
-</li>
-<li>
-<p>To install <a href="https://www.gtk.org">GTK 3</a> run:</p>
-</li>
+<li>Install <a href="https://brew.sh/">Homebrew</a>, <code>go</code>, <code>pkg-config</code> if you don't have installed.</li>
+</ol>
+<p>To install <code>pkg-config</code> run:</p>
+<pre><code>brew install pkg-config
+</code></pre>
+<ol>
+<li>To install <a href="https://www.gtk.org">GTK 4</a> run:</li>
+</ol>
+<pre><code>brew install gtk4
+</code></pre>
+<ol start="3">
+<li>Build impress terminal from source:</li>
+</ol>
+<pre><code>git clone https://github.com/codeation/it.git
+cd it/four
+make
+cd ../..
+</code></pre>
+<h1>Building (macOS, GTK 3)</h1>
+<ol start="0">
+<li>Install <a href="https://brew.sh/">Homebrew</a>, <code>go</code>, <code>pkg-config</code> if you don't have installed.</li>
+</ol>
+<p>To install <code>pkg-config</code> run:</p>
+<pre><code>brew install pkg-config
+</code></pre>
+<ol>
+<li>To install <a href="https://www.gtk.org">GTK 3</a> run:</li>
 </ol>
 <pre><code>brew install gtk+3
-</code></pre>
-<ol start="2">
-<li>To install <code>pkg-config</code> run:</li>
-</ol>
-<pre><code>brew install pkg-config
 </code></pre>
 <ol start="3">
 <li>Build impress terminal from source:</li>
@@ -396,17 +419,16 @@ cd it
 make
 cd ..
 </code></pre>
-<p>The GTK 3 terminal version on macOS 15.4.1 has some issues:</p>
+<p>The GTK 3 terminal version on macOS since 15.4.1 has some issues:</p>
 <ul>
 <li>Redrawing of some windows is delayed after resizing the application window.</li>
-<li>Mouse movement events are not available to the application until the mouse button is pressed.
-It is highly recommended to use the <a href="https://github.com/codeation/itlog">GTK 4 Developer Terminal version</a> on macOS.</li>
+<li>Mouse movement events are not available to the application until the mouse button is pressed.</li>
 </ul>
+<p>It is highly recommended to use the GTK 4 version on macOS.</p>
 <h1>Download</h1>
 <p>You can download the compiled binary <code>it</code> file on the <a href="https://github.com/codeation/it/releases">&quot;releases&quot;</a> page.</p>
 <p>Github Actions builds binaries since v0.2.4 to prevent any corruption. Make sure the release is built from a signed commit.</p>
-<p>Please, check and verify the sha256 sum for downloaded files from previous releases.</p>
-<p>The <code>codeation</code> GPG key (Id <code>A8109B6877BC845E</code>) is used to sign commits in the main branch.</p>
+<p>Debian/Ubuntu with a graphical interface comes with GTK 3 dynamic libraries pre-installed. To use the GTK 4 impress terminal you need to install the GTK 4 dynamic libraries or <code>libgtk-4-dev</code> package.</p>
 <h1>Source code</h1>
 <p><a href="https://github.com/codeation/it">github.com/codeation/it</a></p>
 <h1>Issues</h1>
@@ -422,7 +444,7 @@ It is highly recommended to use the <a href="https://github.com/codeation/itlog"
 <li><a href="https://codeation.github.io/impress/lazy-mode.html">Lazy mode</a></li>
 <li><a href="https://codeation.github.io/impress/event-propagation.html">Recommended event propagation module</a></li>
 <li><a href="https://codeation.github.io/impress/widget-compositing.html">Recommended way to customize a widget</a></li>
-<li><a href="https://codeation.github.io/impress/it-driver.html">GTK 3 terminal</a></li>
+<li><a href="https://codeation.github.io/impress/it-driver.html">GTK terminal</a></li>
 <li><a href="https://codeation.github.io/impress/canvas-driver.html">WebAssembly terminal</a></li>
 <li><a href="https://codeation.github.io/impress/roadmap.html">Project roadmap</a></li>
 <li><a href="https://codeation.github.io/impress/what-is-wrong-with-event-oriented-programming.html">&quot;What's wrong with event-driven programming&quot;</a></li>
