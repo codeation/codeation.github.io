@@ -393,11 +393,11 @@ a:hover {
 </ul>
 <p>To implement complex shutdown scenarios:</p>
 <ul>
-<li>The child controller should monitor <code>ctx.Done</code> concurrently with event handling. If the context is canceled, the <code>Action</code> method must return immediately. If background goroutines remain, they should be waited for in the <code>Wait</code> method.</li>
+<li>The child controller should monitor <code>ctx.Done</code> concurrently with event waiting. If the context is canceled, the <code>Action</code> method must return immediately. If background goroutines remain, they should be waited for in the <code>Wait</code> method.</li>
 <li>A child controller may exit its <code>Action</code> method in response to an event. The parent can check whether a child is still alive using <code>childActor, isAlive := eventLink.Actor()</code>.</li>
-<li>The <code>ctx</code> parameter passed to <code>Link</code> should be derived from the grandparent's context and may be canceled at any time.</li>
-<li>The parent controller can replace a child controller by calling <code>Link</code> with a new controller; the context of the replaced controller will then be canceled.</li>
-<li>A parent controller can cancel a child controller's context by calling the EventLink's <code>Cancel</code> method (for example, <code>c.Cancel()</code>).</li>
+<li>The <code>ctx</code> parameter passed to <code>eventLink.Link</code> should be derived from the grandparent's context and may be canceled at any time.</li>
+<li>The parent controller can replace a child controller by calling <code>eventLink.Link</code> with a new controller; the context of the replaced controller will then be canceled.</li>
+<li>A parent controller can cancel a child controller's context by calling the <code>eventLink.Cancel</code> method.</li>
 </ul>
 
 
