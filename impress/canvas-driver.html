@@ -370,7 +370,7 @@ func main() {
 <p>To run :</p>
 <pre><code>git clone https://github.com/codeation/canvas.git
 cd canvas
-cp &quot;$(go env GOROOT)/misc/wasm/wasm_exec.js&quot; .
+cp &quot;$(go env GOROOT)/lib/wasm/wasm_exec.js&quot; .
 GOOS=js GOARCH=wasm go build -o main.wasm ./cmd/
 go run ./examples/wasm
 </code></pre>
@@ -379,7 +379,7 @@ go run ./examples/wasm
 <ul>
 <li>The performance of the browser will not be enough for the regular use.</li>
 <li>This project is still in the early stages of development and is not yet in a usable state.</li>
-<li>The project was tested on Debian 13.1 with Firefox browser.</li>
+<li>The project was tested on Debian 13.3 with Firefox browser.</li>
 </ul>
 
 
