@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"%s>
-<title>Project Roadmap</title>
+<title>Why impress library</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <style>
@@ -319,29 +319,30 @@ a:hover {
 </div>
 
 <div class="column">
-<h1 class="title">Project Roadmap</h1>
+<h1 class="title">Why impress library</h1>
     
-<h1>Ready or Almost Ready</h1>
+<h1>Why to use Go (Golang) for GUI development</h1>
+<p>Any application with a graphical user interface (GUI) faces one significant technical challenge: it must respond instantly to a wide range of events (keyboard, mouse, etc.) while simultaneously performing resource-intensive tasks to carry out useful work. Therefore, asynchronous programming should be a first-class language feature for building GUI applications.</p>
+<p>A second criterion is balancing the language's level of abstraction against the cost of those abstractions. The best option is a balance between them. In some cases, the code must have zero-cost abstractions. Go is not ideal for creating pixel-perfect 3D games or editing 4K video streams.</p>
+<p>Go is suitable for a wide range of applications. For example, applications for working with text, spreadsheets, charts, and 2D diagrams. Especially applications in which the user can fully focus on their thoughts, without being interrupted by having to wait for a response from the interface.</p>
+<p>The remaining technical requirements are well-suited to Go:</p>
 <ul>
-<li><a href="https://codeation.github.io/impress/event-propagation.html">Recommended Event Propagation module</a>.</li>
-<li>Additional <a href="https://github.com/codeation/tile">library with a set of widgets</a> (text input, dialog, etc.).</li>
-<li><a href="https://github.com/codeation/canvas">WebAssembly terminal</a> for turning a browser into a remote GUI window.</li>
-<li>Two or more <a href="https://github.com/codeation/impress/tree/main/examples/multi">cooperative terminals</a> for the same GUI application.</li>
-<li><a href="https://github.com/codeation/it/tree/main/four">GTK 4 terminal version</a>.</li>
+<li>As fast as a native application. Both the response to an event and the initial launch must be instantaneous.</li>
+<li>Cross-platform compatibility is preferred. Linux and macOS must be supported.</li>
+<li>The application must display text, lines, and images.</li>
+<li>Several windows must interact with the user simultaneously.</li>
 </ul>
-<h1>Long Term Roadmap</h1>
-<ul>
-<li>Apple Silicon native terminal for macOS.</li>
-<li>iOS app used as a GUI app remote client.</li>
-</ul>
-<h1>Removed</h1>
-<ul>
-<li>After the terminal was upgraded to GTK 4, the GTK 3 version of the terminal was removed.</li>
-<li><a href="https://github.com/codeation/itlog">Developer version of the terminal</a> for debugging and profiling has been archived.</li>
-<li>Distribution tool to pack the GUI application into a Debian package. There are no library-related issues when creating a Debian package.</li>
-<li>Auto build GTK 3 terminal for a fixed set of Linux distributions. Choosing OS versions is part of developing and testing custom applications.</li>
-</ul>
-<p>Stay tuned for more.</p>
+<h1>Should a graphical interface mirror the operating system's style?</h1>
+<p>It depends. Modern applications often feature their own custom graphic style. There are no dogmas.</p>
+<p>The impress library does not contain any predefined widgets. The <a href="https://github.com/codeation/tile">tile library</a> does.</p>
+<h1>Immediate mode or retained mode</h1>
+<p>Impress follows the <a href="https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics)">immediate mode</a> pattern. This is the best choice when the application's main window is something unique, rather than a typical set of widgets.</p>
+<p>Immediate mode is simpler for designing custom widgets from scratch, whereas <a href="https://en.wikipedia.org/wiki/Retained_mode">retained mode</a> serves as the primary pattern for composing predefined widgets.</p>
+<p>An application created with a graphical interface requires only a single graphical style. The retained mode library features a complex API for customizing the style of predefined widgets, whereas the immediate mode library requires the application to render the window in whatever manner it chooses.</p>
+<h1>How reliable is the impress library?</h1>
+<p>Under the hood is the interface between the Go API and a small <a href="https://codeation.github.io/impress/it-driver.html">GTK application</a> that implements the GUI API. The GTK library is the most reliable component. Impress is based on a minimalist API for rendering and event handling that invokes GTK methods. The codebase is small and readable.</p>
+<p>No warranties.</p>
+<p>Application testing is part of the application development process.</p>
 
 
 
