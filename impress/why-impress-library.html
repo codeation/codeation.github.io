@@ -333,6 +333,7 @@ a:hover {
 <li>Several windows must interact with the user simultaneously.</li>
 </ul>
 <h1>Should a graphical interface mirror the operating system's style?</h1>
+<p><img src="https://codeation.github.io/images/scratch.png" width="290" height="140" /></p>
 <p>It depends. Modern applications often feature their own custom graphic style. There are no dogmas.</p>
 <p>The impress library does not contain any predefined widgets. The <a href="https://github.com/codeation/tile">tile library</a> does.</p>
 <h1>Immediate mode or retained mode</h1>
@@ -343,6 +344,10 @@ a:hover {
 <p>Under the hood is the interface between the Go API and a small <a href="https://codeation.github.io/impress/it-driver.html">GTK application</a> that implements the GUI API. The GTK library is the most reliable component. Impress is based on a minimalist API for rendering and event handling that invokes GTK methods. The codebase is small and readable.</p>
 <p>No warranties.</p>
 <p>Application testing is part of the application development process.</p>
+<h1>Why GTK</h1>
+<p>The primary objective was to test Go's concurrent capabilities within a GUI application. Unless it is proven that Go is the best language for GUI development, this library would be unnecessary. GTK was not mandatory, but it proved suitable.</p>
+<p>Next came validation. Go offers advantages for GUI development and enables simpler application architecture. Certain GUI development practices can be modernized. At this point, impress requires the stability provided by GTK. Optimization can wait. Some of the discovered Go practices are documented in the code examples and documentation; others remain to be discovered.</p>
+<p>Part of the optimization is reducing overhead when calling C code from Go. Currently, the impress library spawns a small C application that calls GTK functions. After profiling, the GTK-based version runs fast and responds just as quickly as native GTK applications. GTK remains the best choice for impress after comparison with alternatives, including <a href="https://codeation.github.io/impress/canvas-driver.html">WebAssembly</a> and experimental pure Go Wayland implementations.</p>
 
 
 
