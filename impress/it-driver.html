@@ -323,7 +323,7 @@ a:hover {
     
 <h1>Overview</h1>
 <p>The impress library uses a separate application to low-level drawing.</p>
-<img src="https://codeation.github.io/images/it_scheme.png" width="580" height="274" />
+<p><img src="https://codeation.github.io/images/it_scheme.png" width="580" height="274" /></p>
 <p>The main GUI application contains pure Go code. There is not any low-level library required to build the main application. The impress terminal is running in parallel. Impress terminal was written in C and used the GTK library. Named pipes are used to communicate between the main application and impress terminal.</p>
 <p>Impress terminal started and stopped by main application. By default, executable impress terminal binary launched from main application directory or working directory. The environment variable <code>IMPRESS_TERMINAL_PATH</code> may be used to specify full pathname to impress terminal binary.</p>
 <p>Pros:</p>
