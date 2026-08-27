@@ -331,18 +331,20 @@ a:hover {
 <p>For example, a simple button contains a text label element included within a padding element that is enclosed within a border element.</p>
 <p>Sounds complicated, but the code chain looks simple:</p>
 <pre><code>    label := fieldview.New(...)
-    margin := margin.New(label).Margin(...)
-    button := box.New(margin, ...)
+    button := box.New(label).
+      Margin(...).
+      Foreground(...)
     return button
 </code></pre>
 <p>To be part of a composition, each chain element must implement a Viewer interface:</p>
 <pre><code>type Viewer interface {
-	Size() image.Point
-	Draw(w *impress.Window, from image.Point)
-	Select(pt image.Point, from image.Point) (any, image.Rectangle)
+    Size() image.Point
+    Draw(w *impress.Window, from image.Point)
+    Select(pt image.Point, from image.Point) (any, image.Rectangle)
 }
 </code></pre>
 <p><code>Size</code> returns an estimate of the element's size. <code>Draw</code> draws an element in the specified window, starting at the specified offset. <code>Select</code> returns the element's model and its visible rectangle, found at the mouse point, if the element was drawn with the specified offset.</p>
+<p>For example, an implementation of a chain element for drawing shadows might look like this:</p>
 <pre><code>module shadow
 
 type Shadow struct {
@@ -362,11 +364,12 @@ func (v *Shadow) Draw(w *impress.Window, from image.Point) {
     ... // any extra drawing
 }
 </code></pre>
-<p>And extend the code chain to create a new button:</p>
+<p>The shadow element can then be used as a drawing step for the button:</p>
 <pre><code>    var button view.Viewer
     button = fieldview.New(...)
-    button = margin.New(button).Margin(...)
-    button = box.New(button, ...)
+    button = box.New(label).
+      Margin(...).
+      Foreground(...)
     button = shadow.New(button, ...)
     return button
 </code></pre>
